@@ -1,41 +1,82 @@
 import './App.css';
 import * as THREE from 'three'
-import { useRef, Suspense, useEffect } from 'react'
+import { useRef, Suspense, useState } from 'react'
 import { Canvas, useThree, useFrame, useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { EffectComposer, DepthOfField, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 import {
   Environment,
   Lightformer,
-  PerspectiveCamera,
   CameraShake,
-  BakeShadows,
   MeshReflectorMaterial,
   ContactShadows,
-  OrbitControls
+  ScrollControls, useScroll, Scroll, OrbitControls
 } from '@react-three/drei'
 import { LayerMaterial, Base, Depth } from 'lamina'
+import "./ImageFadeMaterial"
+import disp from "./Image.jpg"
+import dist from "./dist.jpg"
+import img from "./img1.jpg"
+import img1 from "./img2.png"
+import image1 from "./img/1.jpg"
+import image2 from "./img/2.jpg"
+import image3 from "./img/3.jpg"
+import image4 from "./img/4.jpg"
+import image5 from "./img/5.jpg"
+import image6 from "./img/6.jpg"
+import image7 from "./img/7.jpg"
+import image8 from "./img/8.jpg"
+import image9 from "./img/9.jpg"
+import image10 from "./img/10.jpg"
 
 const Model = () => {
   const gltf = useLoader(GLTFLoader, '/scene.gltf')
   const carRef = useRef()
+  const carRefScroll = useRef()
+  const scroll = useScroll()
+  const { viewport } = useThree()
+  useFrame(() => (carRefScroll.current.position.x = scroll.offset * 1.5,carRefScroll.current.rotation.y = scroll.offset * 1.5))
   useFrame((state) => {
     const t = state.clock.getElapsedTime()
-    // carRef.current.rotation.set(0.1 + Math.cos(t * 4.5) / 10, Math.sin(t / 4) / 4, 0.3 - (1 + Math.sin(t / 4)) / 8)
     carRef.current.position.y = (1 + Math.sin(t * 20)) / 50
   })
   return (
-    <group ref={carRef} position={[-32.7, -1.5, 1.4]} rotation={[0, 0.5, 0]}>
+    <group ref={carRefScroll} rotation={[0, 0, 0]}>
+    <group ref={carRef} position={[-29, -1.6, -15]} rotation={[0, 0, 0]}>
       <primitive object={gltf.scene} scale={0.3} />
     </group>
+    </group>
+  )
+}
+
+
+
+function FadingImage() {
+  const ref = useRef()
+  const ScrollRef = useRef()
+  const scroll = useScroll()
+  useFrame(() => (ScrollRef.current.position.y = scroll.offset * 12))
+
+  const [texture1, texture2, dispTexture] = useLoader(THREE.TextureLoader, [img, img1, disp])
+  const [hovered, setHover] = useState(false)
+  useFrame(() => (ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)))
+  return (
+    <mesh ref={ScrollRef} position={[3,0,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+      <planeGeometry args={[4, 2]} position={[3,0,-7]}/>
+      <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} />
+    </mesh>
   )
 }
 
 function MovingSpots({ positions = [2, 0, 2, 0, 2, 0, 2, 0] }) {
   const group = useRef()
+  const groupScroll = useRef()
+  const scroll = useScroll()
+  useFrame(() => (groupScroll.current.rotation.y = scroll.offset * 1.5,groupScroll.current.position.z = scroll.offset * 10))
+  
   useFrame((state, delta) => (group.current.position.z += delta * 40) > 10 && (group.current.position.z = -60))
   return (
-    <group rotation={[0, 0.5, 0]}>
+    <group ref={groupScroll} rotation={[0, 0, 0]}>
       <group ref={group}>
         {positions.map((x, i) => (
           <Lightformer
@@ -141,8 +182,6 @@ function MovingSpots({ positions = [2, 0, 2, 0, 2, 0, 2, 0] }) {
 const Ground = () => {
   const floorRef = useRef()
 
-  // useFrame(() => (floorRef.current.position.z = scroll.offset * 1.5,floorRef.current.rotation.z = scroll.offset * 1.5))
-
   return (
     <>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.05, 0]} ref={floorRef}>
@@ -164,25 +203,103 @@ const Ground = () => {
   )
 }
 
-function Dolly() {
-  // This one makes the camera move in and out
-  useFrame(({ clock, camera }) => {
-    camera.position.z = -10
-  })
-  return null
+const ImgSection = () => {
+  const ref = useRef()
+  const ScrollRef = useRef()
+  const scroll = useScroll()
+  useFrame(() => (ScrollRef.current.position.y = scroll.offset * 12))
+
+  const [texture1, texture2,texture10,texture11,texture12,texture13,texture14,texture15,texture16,texture17, texture18, dispTexture] = useLoader(THREE.TextureLoader, [img, img1,image1,image2,image3,image4,image5,image6,image7,image8, dist])
+  const [hovered, setHover] = useState(false)
+  useFrame(() => (ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)))
+  return (
+    <>
+
+    <mesh ref={ScrollRef} position={[-3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+      <planeGeometry args={[4, 2]}/>
+      <imageFadeMaterial ref={ref} tex={texture11} tex2={texture12} disp={dispTexture} />
+    </mesh>
+    </>
+  )
 }
+const ImgSection2 = () => {
+  const ref = useRef()
+  const ref1 = useRef()
+  const ref2 = useRef()
+  const ScrollRef = useRef()
+  const ScrollRef1 = useRef()
+  const ScrollRef2 = useRef()
+  const scroll = useScroll()
+  useFrame(() => (ScrollRef.current.position.y = scroll.offset * 12,ScrollRef1.current.position.y = scroll.offset * 12,ScrollRef2.current.position.y = scroll.offset * 10))
+
+  const [texture1, texture2,texture10,texture11,texture12,texture13,texture14,texture15,texture16,texture17, texture18, dispTexture] = useLoader(THREE.TextureLoader, [img, img1,image1,image2,image3,image4,image5,image6,image7,image8, dist])
+  const [hovered, setHover, setHover1] = useState(false)
+  useFrame(() => (ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)))
+  useFrame(() => (ref1.current.dispFactor = THREE.MathUtils.lerp(ref1.current.dispFactor, !!hovered, 0.1)))
+  useFrame(() => (ref2.current.dispFactor = THREE.MathUtils.lerp(ref2.current.dispFactor, !!hovered, 0.1)))
+  return (
+    <>
+    <group position={[-2, -9, 3]}>
+    {/* image section */}
+    <mesh ref={ScrollRef} position={[-3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+      <planeGeometry args={[4, 2]}/>
+      <imageFadeMaterial ref={ref} tex={texture13} tex2={texture14} disp={dispTexture} />
+    </mesh>
+    </group>
+    <group position={[2, -9, 3]}>
+
+    <mesh ref={ScrollRef1} position={[3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+      <planeGeometry args={[4, 2]}/>
+      <imageFadeMaterial ref={ref1} tex={texture15} tex2={texture16} disp={dispTexture} />
+    </mesh>
+    </group>
+    <group position={[-3, -6, 9]}>
+
+    <mesh ref={ScrollRef2} position={[3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+      <planeGeometry args={[6, 3]}/>
+      <imageFadeMaterial ref={ref2} tex={texture17} tex2={texture18} disp={dispTexture} />
+    </mesh>
+    </group>
+    </>
+  )
+}
+
+function ScrollPage(){
+
+  return(
+    <Scroll html style={{ width: '100%' }}>
+    <h1 style={{ position: 'absolute', color: "#550632", top: `55vh`, right: '1vw', fontSize: '2vw',letterSpacing: '3px', transform: `translate3d(0,-100%,0)` }}>
+    Team of designers and developers   <br />
+    with focus in motion graphics,<br />
+    3D animation<br />
+    and art direction
+    </h1>
+    <h2 style={{ position: 'absolute', top: '110vh', left: '10vw', fontSize: '4vw',color: "#240046" }}>
+We design experiences that enable
+people to feel engaged, awakened in
+postprint era.</h2>
+    <h2 style={{ position: 'absolute', top: '195vh', width:"25vw", fontSize: '3vw', right: '30vw', color: "#001233"}}>Design</h2>
+    <h2 style={{ position: 'absolute', top: '195vh', width:"25vw", fontSize: '3vw', left: '10vw', color: "#DC2F02" }}>Development</h2>
+    <h2 style={{ position: 'absolute', top: '195vh', width:"25vw", fontSize: '3vw', left: '68vw', color: "#DC2F02" }}>Productivity</h2>
+  </Scroll>
+  )
+}
+
 
 
 function App() {
   return (
     <div className="App" >
     <Canvas shadows dpr={[1, 2]} camera={{ fov: 75, position: [0, 4, -10]}}>
-    {/* <PerspectiveCamera rotation={[-Math.PI / 2, 0, 0]}/> */}
+    <ScrollControls damping={6} pages={3}>
     <Ground />
+    <ScrollPage />
     <Suspense fallback={null}>
-      <Model position={[0, 1, 0]} />
+      <Model />
+      <FadingImage />
+      <ImgSection /> 
+      <ImgSection2 /> 
     </Suspense>
-    {/* <Porsche scale={1.6} position={[-0.5, -0.18, 0]} rotation={[0, Math.PI / -1.2, 0]} /> */}
     <spotLight position={[0, 15, 0]} angle={0.3} penumbra={1} castShadow intensity={20} shadow-bias={-0.0001} color={'#03045E'} />
     <ambientLight intensity={0.2} />
     <ContactShadows resolution={1024} frames={1} position={[0, -1.16, 0]} scale={10} blur={3} opacity={1} far={10} />
@@ -203,15 +320,16 @@ function App() {
         </LayerMaterial>
       </mesh>
     </Environment>
+  
+    </ScrollControls>
     <EffectComposer multisampling={0} disableNormalPass={true}>
       <DepthOfField focusDistance={0} focalLength={1} bokehScale={0.5} height={480} />
       <Bloom luminanceThreshold={0} luminanceSmoothing={0.8} height={300} opacity={2} />
       <Noise opacity={0.5} />
     </EffectComposer>
-    <CameraShake yawFrequency={0.2} rollFrequency={0.2} pitchFrequency={0.2} />
+    <CameraShake yawFrequency={0.5} rollFrequency={0.5} pitchFrequency={0.2} />
     {/* <OrbitControls /> */}
-    {/* <Dolly /> */}
-
+    
   </Canvas>
     </div>
   );

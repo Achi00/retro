@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Audiowide&family=Bebas+Neue&family=Dongle:wght@700&family=Fugaz+One&family=Hubballi&family=Inter:wght@900&family=Italiana&family=Kanit&family=Lato&family=League+Spartan:wght@100&family=Lobster&family=Montserrat:wght@200&family=Oswald:wght@500&family=Pacifico&family=Roboto+Mono:wght@100&family=Roboto:wght@700&family=Rubik:wght@600&family=Russo+One&family=Train+One&family=Ubuntu:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Audiowide&family=Bebas+Neue&family=Dongle:wght@700&family=Fugaz+One&family=Hubballi&family=Inter:wght@900&family=Italiana&family=Kanit&family=Lato&family=League+Spartan:wght@100&family=Lobster&family=Monoton&family=Montserrat:wght@200&family=Oswald:wght@500&family=Pacifico&family=Roboto+Mono:wght@100&family=Roboto:wght@700&family=Rubik:wght@600&family=Russo+One&family=Train+One&family=Ubuntu:wght@300&display=swap");
+
 * {
   box-sizing: border-box;
 }
@@ -142,4 +145,29 @@ canvas {
   to {
     transform: rotate(360deg);
   }
+}
+
+h1 {
+  font-family: "Fugaz One", cursive;
+  background: -webkit-linear-gradient(
+    -86deg,
+    #690069 5%,
+    #560088 53%,
+    #5900ff 91%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 4px transparent;
+  color: #232d2d;
+}
+
+h2 {
+  font-family: "Monoton", cursive;
+  background: -webkit-linear-gradient(
+    -86deg,
+    #690069 5%,
+    #560088 53%,
+    #5900ff 91%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 4px transparent;
 }
