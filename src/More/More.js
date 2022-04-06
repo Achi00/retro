@@ -259,16 +259,17 @@ function Sun() {
   function Images() {
     const ImgRef = useRef()
     const scroll = useScroll()
+    const { viewport } = useThree()
     useFrame(() => (ImgRef.current.position.y = scroll.offset * 1.5))
     const texture = useLoader(THREE.TextureLoader, img)
     const texture1 = useLoader(THREE.TextureLoader, img1)
     return (
       <group ref={ImgRef}>
-      <mesh position={[0.25,-1.5,-0.5]}>
+      <mesh position={[0.12,-1.5,-0.5]} scale={viewport.width / 20}>
         <planeBufferGeometry attach="geometry" args={[0.2, 0.1]} />
         <meshBasicMaterial attach="material" map={texture} toneMapped={false} />
       </mesh>
-      <mesh position={[-0.25,-1.5,-0.5]}>
+      <mesh position={[-0.12,-1.5,-0.5]} scale={viewport.width / 20}>
         <planeBufferGeometry attach="geometry" args={[0.2, 0.1]} />
         <meshBasicMaterial attach="material" map={texture1} toneMapped={false} />
       </mesh>
@@ -282,16 +283,17 @@ function Sun() {
     const ScrollRef2 = useRef()
     const scroll = useScroll()
     useFrame(() => (ScrollRef.current.position.y = scroll.offset * 3,ScrollRef1.current.position.y = scroll.offset * 2,ScrollRef2.current.position.y = scroll.offset * 2.1))
+    const { viewport } = useThree()
     return(
       <>
       <group ref={ScrollRef}>
         <Geo position={[0.5,0,-1]} scale={0.1}/>
       </group>
       <group ref={ScrollRef1}>
-        <Geo1 position={[-0.55,-1.5,-0.8]} scale={0.1}/>
+        <Geo1 position={[-0.15,-1.7,-0.8]} scale={viewport.width / 150}/>
       </group>
       <group ref={ScrollRef2}>
-        <Geo2 position={[0.55,-1.5,-0.8]} scale={0.1}/>
+        <Geo2 position={[0.15,-1.3,-0.8]} scale={viewport.width / 150}/>
       </group>
       </>
     )

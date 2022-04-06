@@ -56,12 +56,12 @@ function FadingImage() {
   const ScrollRef = useRef()
   const scroll = useScroll()
   useFrame(() => (ScrollRef.current.position.y = scroll.offset * 12))
-
+  const { viewport } = useThree()
   const [texture1, texture2, dispTexture] = useLoader(THREE.TextureLoader, [img, img1, disp])
   const [hovered, setHover] = useState(false)
   useFrame(() => (ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)))
   return (
-    <mesh ref={ScrollRef} position={[3,0,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+    <mesh ref={ScrollRef} scale={viewport.width / 40} position={[3,0,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
       <planeGeometry args={[4, 2]} position={[3,0,-7]}/>
       <imageFadeMaterial ref={ref} tex={texture1} tex2={texture2} disp={dispTexture} />
     </mesh>
@@ -208,14 +208,14 @@ const ImgSection = () => {
   const ScrollRef = useRef()
   const scroll = useScroll()
   useFrame(() => (ScrollRef.current.position.y = scroll.offset * 12))
-
+  const { viewport } = useThree()
   const [texture1, texture2,texture10,texture11,texture12,texture13,texture14,texture15,texture16,texture17, texture18, dispTexture] = useLoader(THREE.TextureLoader, [img, img1,image1,image2,image3,image4,image5,image6,image7,image8, dist])
   const [hovered, setHover] = useState(false)
   useFrame(() => (ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)))
   return (
     <>
 
-    <mesh ref={ScrollRef} position={[-3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+    <mesh ref={ScrollRef} scale={viewport.width / 40} position={[-3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
       <planeGeometry args={[4, 2]}/>
       <imageFadeMaterial ref={ref} tex={texture11} tex2={texture12} disp={dispTexture} />
     </mesh>
@@ -231,7 +231,7 @@ const ImgSection2 = () => {
   const ScrollRef2 = useRef()
   const scroll = useScroll()
   useFrame(() => (ScrollRef.current.position.y = scroll.offset * 12,ScrollRef1.current.position.y = scroll.offset * 12,ScrollRef2.current.position.y = scroll.offset * 10))
-
+  const { viewport } = useThree()
   const [texture1, texture2,texture10,texture11,texture12,texture13,texture14,texture15,texture16,texture17, texture18, dispTexture] = useLoader(THREE.TextureLoader, [img, img1,image1,image2,image3,image4,image5,image6,image7,image8, dist])
   const [hovered, setHover, setHover1] = useState(false)
   useFrame(() => (ref.current.dispFactor = THREE.MathUtils.lerp(ref.current.dispFactor, !!hovered, 0.1)))
@@ -239,23 +239,23 @@ const ImgSection2 = () => {
   useFrame(() => (ref2.current.dispFactor = THREE.MathUtils.lerp(ref2.current.dispFactor, !!hovered, 0.1)))
   return (
     <>
-    <group position={[-2, -9, 3]}>
+    <group position={[-2, -9, 3]} >
     {/* image section */}
-    <mesh ref={ScrollRef} position={[-3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+    <mesh ref={ScrollRef} scale={viewport.width / 40} position={[-3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
       <planeGeometry args={[4, 2]}/>
       <imageFadeMaterial ref={ref} tex={texture13} tex2={texture14} disp={dispTexture} />
     </mesh>
     </group>
     <group position={[2, -9, 3]}>
 
-    <mesh ref={ScrollRef1} position={[3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+    <mesh ref={ScrollRef1} scale={viewport.width / 40} position={[3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
       <planeGeometry args={[4, 2]}/>
       <imageFadeMaterial ref={ref1} tex={texture15} tex2={texture16} disp={dispTexture} />
     </mesh>
     </group>
     <group position={[-3, -6, 9]}>
 
-    <mesh ref={ScrollRef2} position={[3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
+    <mesh ref={ScrollRef2} scale={viewport.width / 40} position={[3,-10,-7]} rotation={[0.2, Math.PI / -1, 0]} onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
       <planeGeometry args={[6, 3]}/>
       <imageFadeMaterial ref={ref2} tex={texture17} tex2={texture18} disp={dispTexture} />
     </mesh>

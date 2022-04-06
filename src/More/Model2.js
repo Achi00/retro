@@ -30,7 +30,7 @@ export default function Model2(props) {
           <meshBasicMaterial color="#DC2F02" toneMapped={false} />
         </Text>
         <Text bold position={[-4, -0.1, 0]} fontSize={0.4} lineHeight={1} letterSpacing={-0.05} color="#00B4D8">
-          {`Published`}
+          {`Some Text`}
         </Text>
       </group>
       <Shadow ref={shadow} opacity={0.3} rotation-x={-Math.PI / 2} position={[0, -1.51, 0]} />
